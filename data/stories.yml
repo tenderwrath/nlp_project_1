@@ -1,0 +1,55 @@
+version: "3.1"
+
+stories:
+
+- story: full interview
+  steps:
+  - intent: greet
+  - active_loop: null
+  - action: action_ask_soft_skills
+  - intent: provide_soft_skills
+  - action: action_set_soft_skills
+  - action: action_evaluate_candidate
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: candidate leaves before the interview starts
+  steps:
+  - intent: greet
+  - active_loop: interview_form
+  - intent: goodbye
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_goodbye
+
+- story: candidate wants unknown role
+  steps:
+  - intent: greet
+  - active_loop: interview_form
+  - intent: provide_unknown_desired_role
+  - action: utter_unknown_desired_role
+  - action: interview_form
+  - active_loop: interview_form
+  - active_loop: null
+  - action: action_ask_soft_skills
+  - intent: provide_soft_skills
+  - action: action_set_soft_skills
+  - action: action_evaluate_candidate
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: candidate doesn't know what to say
+  steps:
+  - intent: greet
+  - active_loop: interview_form
+  - intent: dont_know
+  - action: utter_dont_know
+  - action: interview_form
+  - active_loop: interview_form
+  - active_loop: null
+  - action: action_ask_soft_skills
+  - intent: provide_soft_skills
+  - action: action_set_soft_skills
+  - action: action_evaluate_candidate
+  - intent: goodbye
+  - action: utter_goodbye

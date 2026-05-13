@@ -1,0 +1,20 @@
+version: "3.1"
+
+rules:
+
+- rule: Activate interview form
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: interview_form
+  - active_loop: interview_form
+
+- rule: Always return to the interview
+  steps:
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
