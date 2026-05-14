@@ -1,0 +1,9 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+models/
+.rasa/
+.rasa/cache/cache.db
+.rasa/cache/
