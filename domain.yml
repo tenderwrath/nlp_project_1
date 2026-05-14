@@ -1,0 +1,218 @@
+version: "3.1"
+
+entities:
+  - name
+  - d_role
+  - contact
+  - format
+
+intents:
+  - greet
+  - goodbye
+  - provide_name
+  - provide_desired_role
+  - provide_unknown_desired_role
+  - provide_education
+  - provide_projects
+  - provide_experience
+  - dont_know
+  - provide_hard_skills
+  - provide_soft_skills
+  - bot_challenge
+  - out_of_scope
+
+slots:
+  candidate_name:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: name
+      conditions:
+      - active_loop: interview_form
+        requested_slot: candidate_name
+
+  contact_info:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: contact
+      conditions:
+      - active_loop: interview_form
+        requested_slot: contact_info
+
+  desired_role:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: d_role
+      conditions:
+      - active_loop: interview_form
+        requested_slot: desired_role
+
+  work_format:
+    type: text
+    mappings:
+    - type: from_entity
+      entity:  format
+      conditions:
+      - active_loop: interview_form
+        requested_slot: work_format
+
+  education:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: interview_form
+        requested_slot: education
+
+  projects:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: interview_form
+        requested_slot: projects
+
+  experience:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: interview_form
+        requested_slot: experience
+
+  hard_skills:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: interview_form
+        requested_slot: hard_skills
+
+  soft_skills:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: interview_form
+        requested_slot: soft_skills
+
+  likely_role:
+    type: text
+    mappings:
+    - type: custom
+
+forms:
+  interview_form:
+    required_slots:
+      - candidate_name
+      - desired_role
+      - work_format
+      - education
+      - projects
+      - experience
+      - hard_skills
+      - contact_info
+
+responses:
+  utter_greet:
+  - text: "Здравствуйте! Я HR-ассистент компании. Готовы приступить к заполнению анкеты?"
+  - text: "Здравствуйте! Я HR-ассистент компании. Готовы начать собеседование?"
+
+  utter_ask_candidate_name:
+  - text: "Как вас зовут?"
+  - text: "Представьтесь, пожалуйста!"
+
+  utter_ask_desired_role:
+  - text: "На какую позицию вы рассматриваете себя? У нас открыты: Project Manager, Data Analyst, Data Engineer, Data Scientist, MLOps Engineer."
+  - text: "В нашей компании сейчас открыты вакансии Project Manager, Data Analyst, Data Engineer, Data Scientist, MLOps Engineer. На какой из этих ролей вы себя видите?"
+  - text: "У нас открыты вакансии Project Manager, Data Analyst, Data Engineer, Data Scientist, MLOps Engineer. На какую вы бы хотели попасть?"
+
+  utter_unknown_desired_role:
+  - text: "К сожалению, такой вакансии у нас сейчас нет. Мы рассматриваем кандидатов на роли Project Manager, Data Analyst, Data Engineer, Data Scientist, MLOps Engineer. Какая из этих ролей вам интересна?"
+  - text: "Такой вакансии у нас пока нет, но если хотите, Вы можете оставить контакт и мы свяжемся с Вами, когда откроется. Или выберите одну из наших открытых вакансий: Project Manager, Data Analyst, Data Engineer, Data Scientist, MLOps Engineer."
+    
+  utter_ask_work_format:
+  - text: "Какой для Вас предпочтительный формат работы? В офисе/удалённо/гибрид?"
+  - text: "Вам больше бы хотелось работать в офисе, удалённо или в гибридном формате?"
+
+  utter_ask_education:
+  - text: "Расскажите о Вашем образовании: специальность, университет, релевантные курсы или дисциплины?"
+  - text: "Расскажите, где Вы учились. Нам интересны университет, направление обучения, но так же не забудьте рассказать про релевантные курсы и дисциплины, которые Вы проходили."
+
+  utter_ask_projects:
+  - text: "Участвовали ли вы в учебных или личных проектах в этой области? Если да, расскажите подробнее и какова была ваша роль."
+  - text: "Есть ли у Вас опыт участия в проектах, связанных с вашим направлением? Если да, расскажите подробнее о проекте и Вашей роли в нём."
+  - text: "Расскажите, если есть такой опыт, о релевантных проектах, в которых вы участвовали. Не забудьте упомянуть о результатах и Вашей роли в этом проекте."
+
+  utter_ask_experience:
+  - text: "Есть ли у вас опыт работы, стажировок или практики? Расскажите о них подробнее!"
+  - text: "Есть ли у вас опыт работы, стажировок или практик? Расскажите где это было, какую роль Вы выполняли и какие задачи решали."
+  - text: "Расскажите об опыте работы, стажировок или практик. Если такой был, расскажите, где это было, какая роль и задачи у Вас были."
+
+  utter_dont_know:
+  - text: "Ничего страшного, идём дальше!"
+  - text: "Хорошо, не проблема. Давайте продолжим!"
+  - text: "Хорошо, всё в порядке. Продолжим!"
+
+  utter_ask_hard_skills:
+  - text: "Какие hard skills Вы имеете? Расскажите о них."
+  - text: "Расскажите об инструментах и технологиях, которые Вы знаете и применяете в работе."
+  - text: "Какие профессиональные навыки вы имеете? Какие инструменты используете? Расскажите об этом."
+
+  utter_ask_soft_skills:
+  - text: "Какие soft skills Вы имеете? Расскажите о них."
+  - text: "Как вы справляетесь со сложными или неожиданными ситуациями? Расскажите о своих мягких навыках."
+
+  utter_ask_soft_skills_pm:
+  - text: "Как Вы организуете работу команды в сложных условиях? Расскажите об этом и других релевантных навыках."
+  - text: "Был ли у вас опыт, когда нужно было договориться сразу с несколькими сторонами? Расскажите об этом и других релевантных навыках."
+  - text: "Как Вы организуете работу в сжатые сроки? Расскажите об этом и других релевантных навыках."
+
+  utter_ask_soft_skills_da:
+  - text: "Как вы объясняете технические результаты людям, которые не имеют образования в Вашей области? Приведите пример такой ситуации."
+  - text: "Расскажите о ситуации, когда нужно было убедить коллег или руководство принять решение на основе ваших данных."
+ 
+  utter_ask_soft_skills_de:
+  - text: "Расскажите о ситуации, когда в системе что-то пошло не так. Как вы подходите к поиску и решению проблем?"
+  - text: "Как вы справляетесь с постоянно растущим количеством и качеством технологий?"
+
+  utter_ask_soft_skills_ds:
+  - text: "Расскажите об исследовательской задаче, которую вы решали и результатах Вашей работы."
+  - text: "Была ли у Вас ситуация, когда Вам пришлось работать с нечеткой задачей или данными? Расскажите о своих подходах и результатах."
+
+  utter_ask_soft_skills_mlops:
+  - text: "Как вы обеспечиваете надёжность систем? Расскажите о своих подходах и результатах."
+  - text: "Как вы подходите к мониторингу и предотвращению сбоев? Расскажите о своих релевантных навыках в решении проблем такого рода."
+
+  utter_offer_role:
+  - text: "На основе нашего диалога, я думаю, что вам отлично подойдёт роль {role}. {explanation}"
+
+  utter_no_match:
+  - text: "Спасибо за Ваши ответы! К сожалению, на данный момент мы не можем предложить подходящую позицию. Но мы сохраним ваши данные и свяжемся с Вами, если откроется подходящая вакансия."
+  - text: "Спасибо за уделённое время! По итогам нашего разговора мы пока не видим для Вас подходящей роли. Мы сохраним ваш контакт и свяжемся с Вами, если откроется подходящая вакансия."
+    
+  utter_ask_contact_info:
+  - text: "Поделитесь контактом для обратной связи! Почта/телефон/телеграм, на Ваш выбор."
+  - text: "Чтобы мы могли с Вами связаться, оставьте контакт - почту/телефон/телеграм."
+
+  utter_goodbye:
+  - text: "Спасибо! Мы изучим вашу кандидатуру и свяжемся с вами в ближайшее время. Удачи!"
+  - text: "Спасибо за интервью! Мы свяжемся с вами в ближайшее время и сообщим результаты. Хорошего дня!"
+
+  utter_iamabot:
+  - text: "Я чат-бот, HR-ассистент компании. Провожу интервью на первой линии."
+
+  utter_out_of_scope:
+  - text: "Спасибо за вопрос, но давайте сосредоточимся на интервью."
+
+actions:
+  - action_ask_soft_skills
+  - action_evaluate_candidate
+  - action_set_soft_skills
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

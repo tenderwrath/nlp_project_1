@@ -67,21 +67,6 @@ class ActionSetSoftSkills(Action):
         text = tracker.latest_message.get('text', '')
         return [SlotSet("soft_skills", text)]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class ActionEvaluateCandidate(Action):
     def name(self) -> Text:
         return "action_evaluate_candidate"
