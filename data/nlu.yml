@@ -1,91 +1,276 @@
 version: "3.1"
 
 nlu:
+
+# ---------------- GREET ----------------
+
 - intent: greet
   examples: |
-    - hey
+    - привет
+    - здравствуйте
+    - добрый день
+    - хай
+    - хелло
+    - доброе утро
+    - добрый вечер
+    - приветик
+    - салют
+    - здравствуй
+    - йо
     - hello
     - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+    - ку
+    - начнем
+    - давайте начнем интервью
+
+# ---------------- GOODBYE ----------------
 
 - intent: goodbye
   examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
+    - пока
+    - до свидания
+    - всего доброго
+    - спасибо, до встречи
+    - хорошего дня
+    - увидимся
+    - до связи
+    - бай
+    - счастливо
+    - спасибо за интервью
+    - хорошего вечера
+    - всего хорошего
+    - cya
     - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
 
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+# ---------------- PROVIDE NAME ----------------
 
-- intent: deny
+- intent: provide_name
   examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+    - меня зовут [Алексей](name)
+    - мое имя [Мария](name)
+    - я [Дмитрий](name)
+    - [Анна](name)
+    - [Иван Петров](name)
+    - можете обращаться ко мне [Кирилл](name)
+    - [Екатерина](name), приятно познакомиться
+    - я [Олег](name)
+    - зовут [София](name)
+    - [Максим](name)
+    - [Алина](name)
+    - мое имя [Никита](name)
+    - я [Полина](name)
+    - [Владимир](name)
+    - [Дарья](name)
 
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+# ---------------- PROVIDE DESIRED ROLE ----------------
 
-- intent: mood_unhappy
+- intent: provide_desired_role
   examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+    - хочу на позицию [Data Scientist](d_role)
+    - рассматриваю роль [Data Analyst](d_role)
+    - мне интересна вакансия [MLOps Engineer](d_role)
+    - хочу работать как [Project Manager](d_role)
+    - [Data Engineer](d_role)
+    - я бы хотел стать [Data Scientist](d_role)
+    - интересует позиция [Data Analyst](d_role)
+    - подаюсь на [Project Manager](d_role)
+    - хочу быть [MLOps Engineer](d_role)
+    - мне нравится направление [Data Engineer](d_role)
+    - хочу в аналитику данных
+    - интересна роль дата саентиста
+    - хочу работать аналитиком
+    - мне подходит mlops engineer
+    - project manager
+
+# ---------------- PROVIDE UNKNOWN DESIRED ROLE ----------------
+
+- intent: provide_unknown_desired_role
+  examples: |
+    - хочу быть frontend разработчиком
+    - интересует вакансия java developer
+    - хочу работать дизайнером
+    - backend developer
+    - ios разработчик
+    - android developer
+    - qa engineer
+    - хочу в gamedev
+    - интересует devops
+    - хочу стать системным администратором
+    - cybersecurity engineer
+    - ux ui дизайнер
+    - графический дизайнер
+    - product designer
+    - web developer
+
+# ---------------- PROVIDE EDUCATION ----------------
+
+- intent: provide_education
+  examples: |
+    - закончил МГУ по специальности прикладная математика
+    - учусь в ВШЭ на анализе данных
+    - у меня высшее техническое образование
+    - окончил СПбГУ
+    - проходил курсы по machine learning
+    - изучал data science в университете
+    - образование: информатика и вычислительная техника
+    - учился на программиста
+    - закончил бакалавриат по математике
+    - магистратура по искусственному интеллекту
+    - проходил курс по python
+    - есть курсы по аналитике данных
+    - учился в ИТМО
+    - образование среднее специальное
+    - проходил обучение на coursera
+    - закончил университет в прошлом году
+    - учусь на 4 курсе
+    - самоучка
+
+# ---------------- PROVIDE PROJECTS ----------------
+
+- intent: provide_projects
+  examples: |
+    - делал pet project на python
+    - участвовал в разработке чат-бота
+    - работал над системой рекомендаций
+    - создавал dashboard в power bi
+    - был проект по анализу данных
+    - разрабатывал ETL pipeline
+    - делал telegram бота
+    - занимался ML проектом
+    - участвовал в хакатоне
+    - писал backend для сервиса
+    - создавал модель классификации
+    - был учебный проект по аналитике
+    - делал визуализацию данных
+    - работал с большими данными
+    - делал проект по компьютерному зрению
+    - реализовал REST API
+    - писал парсер данных
+
+# ---------------- PROVIDE EXPERIENCE ----------------
+
+- intent: provide_experience
+  examples: |
+    - у меня [2](experience_years) года опыта
+    - работаю уже [3](experience_years) года
+    - есть опыт около [1](experience_years) года
+    - опыт работы [5](experience_years) лет
+    - стаж [4](experience_years) года
+    - работал аналитиком [2](experience_years) года
+    - [3](experience_years) года в IT
+    - около [6](experience_years) лет опыта
+    - более [5](experience_years) лет работаю
+    - почти [2](experience_years) года опыта
+    - был на стажировке [1](experience_years) год
+    - без опыта
+    - опыта пока нет
+    - только начинаю карьеру
+    - у меня [2](experience_years) года коммерческого опыта
+    - работаю дата инженером [4](experience_years) года
+    - рабтаю [2](experience_years) года
+    - опыт гдето [3](experience_years) года
+    - уже [7](experience_years) лет в разработке
+
+# ---------------- DONT KNOW ----------------
+
+- intent: dont_know
+  examples: |
+    - не знаю
+    - затрудняюсь ответить
+    - сложно сказать
+    - не уверен
+    - пока не думал об этом
+    - хороший вопрос
+    - даже не знаю
+    - не могу ответить
+    - понятия не имею
+    - без понятия
+    - наверное не знаю
+    - сложно ответить
+    - хм, не уверен
+    - не думал
+    - не помню
+
+# ---------------- PROVIDE HARD SKILLS ----------------
+
+- intent: provide_hard_skills
+  examples: |
+    - знаю python и sql
+    - владею pandas и numpy
+    - умею работать с docker
+    - использую airflow и spark
+    - знаю power bi
+    - работаю с tensorflow
+    - умею писать SQL запросы
+    - знаю git
+    - использую kubernetes
+    - работал с postgresql
+    - знаю tableau
+    - умею строить ML модели
+    - работаю с linux
+    - знаю java и python
+    - умею работать с aws
+    - знаю scikit learn
+    - использую pytorch
+    - работал с hadoop
+
+# ---------------- PROVIDE SOFT SKILLS ----------------
+
+- intent: provide_soft_skills
+  examples: |
+    - умею работать в команде
+    - быстро обучаюсь
+    - хорошо коммуницирую с людьми
+    - умею решать конфликты
+    - стрессоустойчивый
+    - ответственно подхожу к задачам
+    - умею организовывать работу
+    - хорошо управляю временем
+    - легко нахожу общий язык с коллегами
+    - внимателен к деталям
+    - умею презентовать результаты
+    - инициативный
+    - люблю работать в команде
+    - умею договариваться
+    - быстро адаптируюсь
+    - критически мыслю
+
+# ---------------- BOT CHALLENGE ----------------
 
 - intent: bot_challenge
   examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - ты бот?
+    - ты человек?
+    - с кем я разговариваю
+    - это бот?
+    - ты настоящий?
+    - я общаюсь с человеком?
+    - кто ты
+    - ты искусственный интеллект?
+    - ты hr?
+    - это автоматический бот?
+    - ты нейросеть?
+    - ты робот?
+    - кто отвечает на вопросы
+
+# ---------------- OUT OF SCOPE ----------------
+
+- intent: out_of_scope
+  examples: |
+    - какая сегодня погода
+    - расскажи анекдот
+    - сколько будет 2+2
+    - включи музыку
+    - кто выиграет чемпионат мира
+    - закажи пиццу
+    - какой курс доллара
+    - что ты умеешь
+    - как дела
+    - сколько времени
+    - где находится Москва
+    - хочу поговорить не про работу
+    - расскажи про фильмы
+    - кто президент Франции
+    - сыграем в игру
+    - включи видео
+    - какая сейчас дата
