@@ -113,6 +113,9 @@ slots:
     mappings:
       - type: from_entity
         entity: salary
+        conditions:
+      - active_loop: interview_form
+        requested_slot: salary_form
 
 forms:
   interview_form:
@@ -125,6 +128,7 @@ forms:
       - experience
       - hard_skills
       - contact_info
+      - salary_form
 
 responses:
   utter_greet:
