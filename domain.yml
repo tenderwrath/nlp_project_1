@@ -106,7 +106,7 @@ slots:
     type: text
     mappings:
     - type: custom
-    
+
   salary:
     type: text
     influence_conversation: false
@@ -217,6 +217,9 @@ responses:
 
   utter_out_of_scope:
   - text: "Спасибо за вопрос, но давайте сосредоточимся на интервью."
+
+  utter_ask_salary:
+    - text: "Какие у вас зарплатные ожидания?"
 
 actions:
   - action_ask_soft_skills
