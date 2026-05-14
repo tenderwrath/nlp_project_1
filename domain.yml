@@ -57,7 +57,7 @@ slots:
     - type: from_text
       conditions:
       - active_loop: interview_form
-        requested_slot: contact_info
+        requested_slot: desired_role
 
   work_format:
     type: text
@@ -92,13 +92,14 @@ slots:
       - active_loop: interview_form
         requested_slot: experience
 
-  slots:
   experience_years:
     type: float
     mappings:
       - type: from_entity
         entity: experience_years
-      - type: from_text  
+        conditions:
+        - active_loop: interview_form
+          requested_slot: experience_years
 
   hard_skills:
     type: text
@@ -120,14 +121,13 @@ slots:
     - type: custom
 
   salary:
-    type: text
-    influence_conversation: false
+    type: float
     mappings:
       - type: from_entity
         entity: salary
         conditions:
-      - active_loop: interview_form
-        requested_slot: salary_form
+        - active_loop: interview_form
+          requested_slot: salary
 
 forms:
   interview_form:
@@ -140,7 +140,7 @@ forms:
       - experience
       - hard_skills
       - contact_info
-      - salary_form
+      - salary
 
 responses:
   utter_greet:
@@ -225,8 +225,8 @@ responses:
   - text: "Чтобы мы могли с Вами связаться, оставьте контакт - почту/телефон/телеграм."
 
   utter_goodbye:
-  - text: "Спасибо! Мы изучим вашу кандидатуру и свяжемся с вами в ближайшее время. Удачи!"
-  - text: "Спасибо за интервью! Мы свяжемся с вами в ближайшее время и сообщим результаты. Хорошего дня!"
+  - text: "Спасибо! Всего хорошего!"
+  - text: "Спасибо за интервью! Хорошего дня!"
 
   utter_iamabot:
   - text: "Я чат-бот, HR-ассистент компании. Провожу интервью на первой линии."

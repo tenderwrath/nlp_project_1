@@ -15,6 +15,8 @@ class ValidateInterviewForm(FormValidationAction):
         self,
         slot_value: Any,
         dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
     ) -> Dict[Text, Any]:
         
         text = str(slot_value).lower()
@@ -133,7 +135,7 @@ class ActionAskSoftSkills(Action):
 
         return best_role
 
-    def run(self, dispatcher, tracker):
+    def run(self, dispatcher, tracker, domain):
         education = tracker.get_slot("education") or ""
         experience = tracker.get_slot("experience") or ""
         hard_skills = tracker.get_slot("hard_skills") or ""
@@ -164,7 +166,9 @@ class ActionSetSoftSkills(Action):
     def name(self) -> Text:
         return "action_set_soft_skills"
 
-    def run(self, tracker: Tracker) -> List[Dict[Text, Any]]:
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         text = tracker.latest_message.get('text', '')
         return [SlotSet("soft_skills", text)]
@@ -173,7 +177,9 @@ class ActionEvaluateCandidate(Action):
     def name(self) -> Text:
         return "action_evaluate_candidate"
 
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker) -> List[Dict[Text, Any]]:
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         likely_role = tracker.get_slot("likely_role")
         desired_role = tracker.get_slot("desired_role")

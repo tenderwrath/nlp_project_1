@@ -5,8 +5,10 @@ assistant_id: 20260514-142648-product-plywood
 language: ru
 
 pipeline:
+  - name: SpacyNLP
+    model: "ru_core_news_lg"
   - name: SpacyTokenizer
-  - name: SpacyFeaturizer  
+  - name: SpacyFeaturizer
   - name: RegexFeaturizer
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer

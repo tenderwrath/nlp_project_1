@@ -13,8 +13,6 @@ stories:
   - action: action_ask_soft_skills
   - intent: provide_soft_skills
   - action: action_set_soft_skills
-  - action: utter_ask_salary
-  - intent: provide_salary
   - action: action_evaluate_candidate
   - intent: goodbye
   - action: utter_goodbye
@@ -47,8 +45,6 @@ stories:
   - intent: provide_soft_skills
   - action: action_set_soft_skills
   - action: action_evaluate_candidate
-  - action: utter_ask_salary
-  - intent: provide_salary
   - intent: goodbye
   - action: utter_goodbye
 
@@ -68,8 +64,6 @@ stories:
   - intent: provide_soft_skills
   - action: action_set_soft_skills
   - action: action_evaluate_candidate
-  - action: utter_ask_salary
-  - intent: provide_salary
   - intent: goodbye
   - action: utter_goodbye
 
@@ -88,4 +82,4 @@ stories:
   - action: action_ask_soft_skills
   - intent: dont_know
   - action: utter_dont_know
-  - action: action_evaluate_candidate   # или продолжить без soft skills
+  - action: action_evaluate_candidate 
