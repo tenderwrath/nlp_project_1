@@ -69,6 +69,16 @@ stories:
 
 - story: user doesn't know soft skills
   steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ready
+  - action: interview_form
+  - active_loop: interview_form
+  - intent: dont_know
+  - action: utter_dont_know
+  - action: interview_form
+  - active_loop: interview_form
+  - active_loop: null
   - action: action_ask_soft_skills
   - intent: dont_know
   - action: utter_dont_know
