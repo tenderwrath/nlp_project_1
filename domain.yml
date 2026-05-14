@@ -6,6 +6,7 @@ entities:
   - contact
   - format
   - experience_years
+  - salary
 
 intents:
   - greet
@@ -24,6 +25,7 @@ intents:
   - provide_contact_info
   - bot_challenge
   - out_of_scope
+  - provide_salary
 
 slots:
   candidate_name:
@@ -52,6 +54,10 @@ slots:
       conditions:
       - active_loop: interview_form
         requested_slot: desired_role
+    - type: from_text
+      conditions:
+      - active_loop: interview_form
+        requested_slot: contact_info
 
   work_format:
     type: text
@@ -86,6 +92,14 @@ slots:
       - active_loop: interview_form
         requested_slot: experience
 
+  slots:
+  experience_years:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: experience_years
+      - type: from_text  
+
   hard_skills:
     type: text
     mappings:
@@ -105,6 +119,16 @@ slots:
     mappings:
     - type: custom
 
+  salary:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: salary
+        conditions:
+      - active_loop: interview_form
+        requested_slot: salary_form
+
 forms:
   interview_form:
     required_slots:
@@ -116,6 +140,7 @@ forms:
       - experience
       - hard_skills
       - contact_info
+      - salary_form
 
 responses:
   utter_greet:
@@ -165,7 +190,7 @@ responses:
 
   utter_ask_soft_skills:
   - text: "Какие soft skills Вы имеете? Расскажите о них."
-  - text: "Как вы справляетесь со сложными или неожиданными ситуациями? Расскажите о своих мягких навыках."
+  - text: "Как вы справляетесь со сложными или неожиданными ситуациями? Расскажите, какие у вас есть soft skills."
 
   utter_ask_soft_skills_pm:
   - text: "Как Вы организуете работу команды в сложных условиях? Расскажите об этом и других релевантных навыках."
@@ -209,10 +234,14 @@ responses:
   utter_out_of_scope:
   - text: "Спасибо за вопрос, но давайте сосредоточимся на интервью."
 
+  utter_ask_salary:
+    - text: "Какие у вас зарплатные ожидания?"
+
 actions:
   - action_ask_soft_skills
   - action_evaluate_candidate
   - action_set_soft_skills
+  - validate_interview_form
 
 
 session_config:

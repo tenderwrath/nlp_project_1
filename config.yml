@@ -5,7 +5,8 @@ assistant_id: 20260514-142648-product-plywood
 language: ru
 
 pipeline:
-  - name: WhitespaceTokenizer
+  - name: SpacyTokenizer
+  - name: SpacyFeaturizer  
   - name: RegexFeaturizer
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
