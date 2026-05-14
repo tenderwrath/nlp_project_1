@@ -94,7 +94,7 @@ if user_message:
 
         if not bot_messages:
             st.session_state.messages.append(
-                ("bot", "Бот не вернул ответ. Проверь, что Rasa запущена.")
+                ("bot", "Некорректный ответ.")
             )
 
         for msg in bot_messages:
