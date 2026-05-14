@@ -54,6 +54,10 @@ slots:
       conditions:
       - active_loop: interview_form
         requested_slot: desired_role
+    - type: from_text
+      conditions:
+      - active_loop: interview_form
+        requested_slot: contact_info
 
   work_format:
     type: text
@@ -87,6 +91,14 @@ slots:
       conditions:
       - active_loop: interview_form
         requested_slot: experience
+
+  slots:
+  experience_years:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: experience_years
+      - type: from_text  
 
   hard_skills:
     type: text
@@ -178,7 +190,7 @@ responses:
 
   utter_ask_soft_skills:
   - text: "Какие soft skills Вы имеете? Расскажите о них."
-  - text: "Как вы справляетесь со сложными или неожиданными ситуациями? Расскажите о своих мягких навыках."
+  - text: "Как вы справляетесь со сложными или неожиданными ситуациями? Расскажите, какие у вас есть soft skills."
 
   utter_ask_soft_skills_pm:
   - text: "Как Вы организуете работу команды в сложных условиях? Расскажите об этом и других релевантных навыках."
@@ -229,6 +241,7 @@ actions:
   - action_ask_soft_skills
   - action_evaluate_candidate
   - action_set_soft_skills
+  - validate_interview_form
 
 
 session_config:

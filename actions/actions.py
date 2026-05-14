@@ -2,6 +2,38 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
+from rasa_sdk import Tracker, FormValidationAction
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.types import DomainDict
+import re
+
+class ValidateInterviewForm(FormValidationAction):
+    def name(self) -> str:
+        return "validate_interview_form"
+
+    async def validate_experience(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        
+        text = str(slot_value).lower()
+        match = re.search(r'(\d+(?:\.\d+)?)', text)
+        if match:
+            years = float(match.group(1))
+            if 0 <= years <= 70:
+                return {"experience": slot_value, "experience_years": years}
+            else:
+                dispatcher.utter_message(text="Пожалуйста, укажите корректное количество лет.")
+                return {"experience": None}
+        else:
+            if "нет опыта" in text or "без опыта" in text:
+                return {"experience": slot_value, "experience_years": 0.0}
+            else:
+                dispatcher.utter_message(text="Не удалось определить ваш опыт. Пожалуйста, укажите количество лет или 'нет опыта'")
+                return {"experience": None}
 
 class ActionAskSoftSkills(Action):
     def name(self) -> Text:
@@ -79,6 +111,10 @@ class ActionEvaluateCandidate(Action):
         desired_role = tracker.get_slot("desired_role")
 
         if likely_role is None:
+            dispatcher.utter_message(response="utter_no_match")
+            return []
+        
+        if desired_role is None:
             dispatcher.utter_message(response="utter_no_match")
             return []
 
