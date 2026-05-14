@@ -6,6 +6,7 @@ entities:
   - contact
   - format
   - experience_years
+  - salary
 
 intents:
   - greet
@@ -24,6 +25,7 @@ intents:
   - provide_contact_info
   - bot_challenge
   - out_of_scope
+  - provide_salary
 
 slots:
   candidate_name:
@@ -104,6 +106,13 @@ slots:
     type: text
     mappings:
     - type: custom
+    
+  salary:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: salary
 
 forms:
   interview_form:
