@@ -1,4 +1,4 @@
-from typing import Any, Text, Dict, List
+from typing import Any, Text, Dict, List, Optional, Dict, List, Tuple
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
@@ -15,8 +15,6 @@ class ValidateInterviewForm(FormValidationAction):
         self,
         slot_value: Any,
         dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
     ) -> Dict[Text, Any]:
         
         text = str(slot_value).lower()
@@ -38,37 +36,111 @@ class ValidateInterviewForm(FormValidationAction):
 class ActionAskSoftSkills(Action):
     def name(self) -> Text:
         return "action_ask_soft_skills"
-    
-    def determine_likely_role(self, education, experience, hard_skills, projects):
-        edu = education.lower() if education else ""
-        exp = experience.lower() if experience else ""
-        hard = hard_skills.lower() if hard_skills else ""
-        proj = projects.lower() if projects else ""
 
-        if any(word in hard + " " + exp + " " + proj for word in ["pipeline", "etl", "airflow", "kafka", "spark", "datalake", "sql", "nosql"]):
-            return "Data Engineer"
+    ROLE_KEYWORDS: Dict[str, Dict[str, int]] = {
+        "Data Engineer": {
+            "etl": 3, "pipeline": 3, "data pipeline": 3, "airflow": 3, "kafka": 3,
+            "spark": 3, "hadoop": 3, "dbt": 2, "dataflow": 2,
+            "sql": 2, "nosql": 2, "mongodb": 2, "postgresql": 2,
+            "data lake": 2, "data warehouse": 2, "data integration": 2,
+            "dbt": 2, "presto": 2, "hive": 2, "flink": 2,
+            "обработка данных": 2, "трансформация данных": 2,
+        },
+        "MLOps Engineer": {
+            "mlops": 3, "ci/cd": 3, "kubernetes": 3, "docker": 3,
+            "деплой": 3, "мониторинг": 2, "логи": 2, "prometheus": 2,
+            "grafana": 2, "mlflow": 3, "kubeflow": 3,
+            "gitlab ci": 2, "github actions": 2, "jenkins": 2,
+            "terraform": 2, "helm": 2,
+            "автоматизация": 2, "scaling": 2,
+        },
+        "Data Scientist": {
+            "машинное обучение": 3, "ml": 3, "deep learning": 3, "нейросети": 3,
+            "scikit-learn": 3, "sklearn": 3, "tensorflow": 3, "pytorch": 3,
+            "xgboost": 2, "catboost": 2, "lightgbm": 2,
+            "pandas": 2, "numpy": 2, "statistics": 2, "статистика": 2,
+            "random forest": 2, "градиентный бустинг": 2,
+            "nlp": 2, "computer vision": 2, "cv": 2,
+            "a/b test": 2, "ab test": 2,
+        },
+        "Data Analyst": {
+            "анализ данных": 3, "визуализация": 3, "дашборд": 3,
+            "tableau": 3, "power bi": 3, "looker": 2,
+            "sql": 2, "excel": 2, "matplotlib": 2, "seaborn": 2,
+            "статистика": 2, "a/b test": 2, "ab test": 2,
+            "отчет": 2, "dashboard": 2,
+            "бизнес-требования": 2, "продуктовые метрики": 2,
+        },
+        "Project Manager": {
+            "управление проектами": 3, "project management": 3, "agile": 3,
+            "scrum": 3, "kanban": 3, "jira": 2, "trello": 2,
+            "управление командой": 2, "team management": 2,
+            "коммуникация": 2, "stakeholder": 2,
+            "бюджет": 2, "риски": 2, "roadmap": 2,
+            "ведение проектов": 2,
+        }
+    }
 
-        if any(word in hard + " " + exp + " " + proj for word in ["mlops", "kubernetes", "docker", "ci/cd", "деплой", "мониторинг", "логи", "gitlab ci", "github actions"]):
-            return "MLOps Engineer"
+    CONFIDENCE_THRESHOLD = 4
 
-        if any(word in hard + " " + exp + " " + proj for word in ["scikit-learn", "sklearn", "tensorflow", "pytorch", "xgboost", "catboost", "нейросети", "deep learning", "random forest", "pandas", "numpy", "машинное обучение"]):
-            return "Data Scientist"
+    def _calculate_score(self, text: str, role_keywords: Dict[str, int]) -> int:
+        """Вычисляет взвешенную сумму совпадений ключевых слов в тексте."""
+        if not text:
+            return 0
+        text_lower = text.lower()
+        score = 0
+        for keyword, weight in role_keywords.items():
+            if keyword in text_lower:
+                score += weight
+        return score
 
-        if any(word in hard + " " + exp + " " + proj for word in ["анализ данных", "статистика", "excel", "tableau", "power bi", "matplotlib", "seaborn", "sql", "визуализация", "дашборд"]):
-            return "Data Analyst"
+    def _compute_role_scores(self, education: str, experience: str, hard_skills: str, projects: str) -> Dict[str, int]:
+        """Собирает все тексты и считает очки для каждой роли."""
+        combined_text = f"{education} {experience} {hard_skills} {projects}"
+        scores = {}
+        for role, keywords in self.ROLE_KEYWORDS.items():
+            scores[role] = self._calculate_score(combined_text, keywords)
+        return scores
 
-        if any(word in hard + " " + exp + " " + proj for word in ["agile", "scrum", "kanban", "jira", "управление проектами", "управление командой", "бюджет", "коммуникация", "stakeholder"]):
-            return "Project Manager"
+    def _adjust_by_experience(self, scores: Dict[str, int], experience_years: float) -> Dict[str, int]:
+        """Корректирует очки в зависимости от опыта (например, для PM нужен опыт)."""
+        if experience_years < 1:
+            scores["Project Manager"] -= 2
+            scores["MLOps Engineer"] -= 1
+        elif experience_years >= 3:
+            scores["Project Manager"] += 1
+            scores["Data Scientist"] += 1
+        return scores
 
-        return None
+    def determine_likely_role(self, education, experience, hard_skills, projects, experience_years=None) -> Optional[str]:
+        scores = self._compute_role_scores(
+            str(education or ""),
+            str(experience or ""),
+            str(hard_skills or ""),
+            str(projects or "")
+        )
 
-    def run(self, dispatcher, tracker, domain):
+        scores = self._adjust_by_experience(scores, experience_years)
+
+        if not scores:
+            return None
+
+        best_role = max(scores, key=scores.get)
+        best_score = scores[best_role]
+
+        if best_score < self.CONFIDENCE_THRESHOLD:
+            return None
+
+        return best_role
+
+    def run(self, dispatcher, tracker):
         education = tracker.get_slot("education") or ""
         experience = tracker.get_slot("experience") or ""
         hard_skills = tracker.get_slot("hard_skills") or ""
         projects = tracker.get_slot("projects") or ""
+        experience_years = tracker.get_slot("experience_years") or 0.0
 
-        likely_role = self.determine_likely_role(education, experience, hard_skills, projects)
+        likely_role = self.determine_likely_role(education, experience, hard_skills, projects, experience_years)
         events = [SlotSet("likely_role", likely_role)]
 
         dispatcher.utter_message(response="utter_ask_soft_skills")
@@ -92,9 +164,7 @@ class ActionSetSoftSkills(Action):
     def name(self) -> Text:
         return "action_set_soft_skills"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    def run(self, tracker: Tracker) -> List[Dict[Text, Any]]:
 
         text = tracker.latest_message.get('text', '')
         return [SlotSet("soft_skills", text)]
@@ -103,9 +173,7 @@ class ActionEvaluateCandidate(Action):
     def name(self) -> Text:
         return "action_evaluate_candidate"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker) -> List[Dict[Text, Any]]:
 
         likely_role = tracker.get_slot("likely_role")
         desired_role = tracker.get_slot("desired_role")
