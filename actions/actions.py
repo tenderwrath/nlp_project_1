@@ -52,7 +52,7 @@ class ActionAskSoftSkills(Action):
         elif likely_role == "MLOps Engineer":
             dispatcher.utter_message(response="utter_ask_soft_skills_mlops")
         else:
-            pass
+            dispatcher.utter_message(response="utter_ask_soft_skills")
 
         return events
 

@@ -5,6 +5,7 @@ entities:
   - d_role
   - contact
   - format
+  - experience_years
 
 intents:
   - greet
@@ -20,6 +21,7 @@ intents:
   - dont_know
   - provide_hard_skills
   - provide_soft_skills
+  - provide_contact_info
   - bot_challenge
   - out_of_scope
 
