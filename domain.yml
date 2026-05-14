@@ -8,6 +8,7 @@ entities:
 
 intents:
   - greet
+  - ready
   - goodbye
   - provide_name
   - provide_desired_role

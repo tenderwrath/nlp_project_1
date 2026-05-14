@@ -6,6 +6,7 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
+  - intent: ready
   - action: interview_form
   - active_loop: interview_form
   - active_loop: null
@@ -20,6 +21,7 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
+  - intent: ready
   - action: interview_form
   - active_loop: interview_form
   - intent: goodbye
@@ -31,6 +33,7 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
+  - intent: ready
   - action: interview_form
   - active_loop: interview_form
   - intent: provide_unknown_desired_role
@@ -49,6 +52,7 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
+  - intent: ready
   - action: interview_form
   - active_loop: interview_form
   - intent: dont_know
