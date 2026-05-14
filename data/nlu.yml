@@ -113,6 +113,26 @@ nlu:
     - product designer
     - web developer
 
+# ---------------- PROVIDE WORK FORMAT ----------------
+
+- intent: provide_work_format
+  examples: |
+    - хочу работать [удалённо](format)
+    - предпочитаю [в офисе](format)
+    - мне подходит [гибрид](format)
+    - [удаленка](format)
+    - [офис](format)
+    - только [гибридный формат](format)
+
+# ---------------- PROVIDE CONTACT INFO ----------------
+
+- intent: provide_contact_info
+  examples: |
+    - мой телефон [89991234567](contact)
+    - пишите на почту [ivan@example.com](contact)
+    - телеграм [@ivan_88](contact)
+    - свяжитесь со мной по [+7 123 456-78-90](contact)
+
 # ---------------- PROVIDE EDUCATION ----------------
 
 - intent: provide_education

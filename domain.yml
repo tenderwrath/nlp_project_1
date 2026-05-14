@@ -13,6 +13,7 @@ intents:
   - provide_name
   - provide_desired_role
   - provide_unknown_desired_role
+  - provide_work_format
   - provide_education
   - provide_projects
   - provide_experience
@@ -94,7 +95,7 @@ slots:
   soft_skills:
     type: text
     mappings:
-    - type: from_text
+    - type: custom
 
 
   likely_role:
