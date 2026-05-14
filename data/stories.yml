@@ -5,6 +5,9 @@ stories:
 - story: full interview
   steps:
   - intent: greet
+  - action: utter_greet
+  - action: interview_form
+  - active_loop: interview_form
   - active_loop: null
   - action: action_ask_soft_skills
   - intent: provide_soft_skills
@@ -16,6 +19,8 @@ stories:
 - story: candidate leaves before the interview starts
   steps:
   - intent: greet
+  - action: utter_greet
+  - action: interview_form
   - active_loop: interview_form
   - intent: goodbye
   - action: action_deactivate_loop
@@ -25,6 +30,8 @@ stories:
 - story: candidate wants unknown role
   steps:
   - intent: greet
+  - action: utter_greet
+  - action: interview_form
   - active_loop: interview_form
   - intent: provide_unknown_desired_role
   - action: utter_unknown_desired_role
@@ -41,6 +48,8 @@ stories:
 - story: candidate doesn't know what to say
   steps:
   - intent: greet
+  - action: utter_greet
+  - action: interview_form
   - active_loop: interview_form
   - intent: dont_know
   - action: utter_dont_know

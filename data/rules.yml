@@ -2,13 +2,6 @@ version: "3.1"
 
 rules:
 
-- rule: Activate interview form
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - action: interview_form
-  - active_loop: interview_form
-
 - rule: Always return to the interview
   steps:
   - intent: out_of_scope
