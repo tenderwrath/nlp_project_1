@@ -94,9 +94,7 @@ slots:
     type: text
     mappings:
     - type: from_text
-      conditions:
-      - active_loop: interview_form
-        requested_slot: soft_skills
+
 
   likely_role:
     type: text
