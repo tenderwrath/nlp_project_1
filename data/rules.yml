@@ -11,3 +11,10 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Process soft skills after asking
+  steps:
+  - action: action_ask_soft_skills
+  - intent: provide_soft_skills
+  - action: action_set_soft_skills
+  - action: action_evaluate_candidate

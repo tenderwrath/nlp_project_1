@@ -85,8 +85,7 @@ class ActionAskSoftSkills(Action):
 
     CONFIDENCE_THRESHOLD = 4
 
-    def _calculate_score(self, text: str, role_keywords: Dict[str, int]) -> int:
-        """Вычисляет взвешенную сумму совпадений ключевых слов в тексте."""
+    def _calculate_score(self, text: str, role_keywords: Dict[str, int]):
         if not text:
             return 0
         text_lower = text.lower()
@@ -96,16 +95,14 @@ class ActionAskSoftSkills(Action):
                 score += weight
         return score
 
-    def _compute_role_scores(self, education: str, experience: str, hard_skills: str, projects: str) -> Dict[str, int]:
-        """Собирает все тексты и считает очки для каждой роли."""
+    def _compute_role_scores(self, education: str, experience: str, hard_skills: str, projects: str):
         combined_text = f"{education} {experience} {hard_skills} {projects}"
         scores = {}
         for role, keywords in self.ROLE_KEYWORDS.items():
             scores[role] = self._calculate_score(combined_text, keywords)
         return scores
 
-    def _adjust_by_experience(self, scores: Dict[str, int], experience_years: float) -> Dict[str, int]:
-        """Корректирует очки в зависимости от опыта (например, для PM нужен опыт)."""
+    def _adjust_by_experience(self, scores: Dict[str, int], experience_years: float):
         if experience_years < 1:
             scores["Project Manager"] -= 2
             scores["MLOps Engineer"] -= 1
@@ -114,7 +111,7 @@ class ActionAskSoftSkills(Action):
             scores["Data Scientist"] += 1
         return scores
 
-    def determine_likely_role(self, education, experience, hard_skills, projects, experience_years=None) -> Optional[str]:
+    def determine_likely_role(self, education, experience, hard_skills, projects, experience_years=None):
         scores = self._compute_role_scores(
             str(education or ""),
             str(experience or ""),
