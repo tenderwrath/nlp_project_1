@@ -122,12 +122,12 @@ slots:
 
   salary:
     type: text
+    influence_conversation: false
     mappings:
-      - type: from_entity
-        entity: salary
+      - type: from_text
         conditions:
-        - active_loop: interview_form
-          requested_slot: salary
+          - active_loop: interview_form
+            requested_slot: salary
 
 forms:
   interview_form:
