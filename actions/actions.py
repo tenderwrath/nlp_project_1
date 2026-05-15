@@ -169,6 +169,47 @@ class ActionSetSoftSkills(Action):
 
         text = tracker.latest_message.get('text', '')
         return [SlotSet("soft_skills", text)]
+    
+class ValidateInterviewForm(FormValidationAction):
+        async def validate_salary(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+
+        text = str(slot_value).lower().strip()
+
+        if not text:
+            dispatcher.utter_message(text="Пожалуйста, укажите зарплатные ожидания.")
+            return {"salary": None}
+
+        cleaned = text.replace(" ", "").replace(",", ".")
+
+        numbers = re.findall(r"\d+(?:\.\d+)?", cleaned)
+
+        if not numbers:
+            dispatcher.utter_message(
+                text="Не удалось определить зарплату. Напишите, например: 200000, 200к или 200 тысяч."
+            )
+            return {"salary": None}
+
+        salary = float(numbers[0])
+
+        if "к" in cleaned or "тыс" in cleaned:
+            salary *= 1000
+
+        if salary < 1000:
+            salary *= 1000
+
+        if salary < 10000 or salary > 2000000:
+            dispatcher.utter_message(
+                text="Пожалуйста, укажите реалистичную зарплату, например: 150000 или 200к."
+            )
+            return {"salary": None}
+
+        return {"salary": str(int(salary))}
 
 class ActionEvaluateCandidate(Action):
     def name(self) -> Text:

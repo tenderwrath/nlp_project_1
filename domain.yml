@@ -121,7 +121,7 @@ slots:
     - type: custom
 
   salary:
-    type: float
+    type: text
     mappings:
       - type: from_entity
         entity: salary

@@ -1772,7 +1772,7 @@ nlu:
 # ---------------- PROVIDE SALARY ----------------
   - intent: provide_salary
     examples: |
-      - [200000] (salary)
+      - [200000](salary)
       - хочу [200000](salary)
       - хочу зарплату [200000 рублей](salary)
       - ожидаю [150 тысяч](salary)
